@@ -1,4 +1,4 @@
-package common
+package p2p
 
 import (
 	"errors"
@@ -12,12 +12,6 @@ var ErrNilMockNet = errors.New("nil mocknet provided")
 
 // ErrNilTopic signals that a nil topic has been provided
 var ErrNilTopic = errors.New("nil topic")
-
-// ErrTopicAlreadyExists signals that a topic already exists
-var ErrTopicAlreadyExists = errors.New("topic already exists")
-
-// ErrTopicValidatorOperationNotSupported signals that an unsupported validator operation occurred
-var ErrTopicValidatorOperationNotSupported = errors.New("topic validator operation is not supported")
 
 // ErrChannelDoesNotExist signals that a requested channel does not exist
 var ErrChannelDoesNotExist = errors.New("channel does not exist")

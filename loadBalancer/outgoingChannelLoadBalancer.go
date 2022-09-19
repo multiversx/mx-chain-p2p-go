@@ -5,10 +5,10 @@ import (
 	"sync"
 
 	logger "github.com/ElrondNetwork/elrond-go-logger"
-	"github.com/ElrondNetwork/elrond-go-p2p/common"
+	"github.com/ElrondNetwork/elrond-go-p2p"
 )
 
-var _ common.ChannelLoadBalancer = (*OutgoingChannelLoadBalancer)(nil)
+var _ p2p.ChannelLoadBalancer = (*OutgoingChannelLoadBalancer)(nil)
 var log = logger.GetOrCreate("p2p/loadbalancer")
 
 const defaultSendChannel = "default send channel"
@@ -16,13 +16,13 @@ const defaultSendChannel = "default send channel"
 // OutgoingChannelLoadBalancer is a component that evenly balances requests to be sent
 type OutgoingChannelLoadBalancer struct {
 	mut      sync.RWMutex
-	chans    []chan *common.SendableData
-	mainChan chan *common.SendableData
+	chans    []chan *p2p.SendableData
+	mainChan chan *p2p.SendableData
 	names    []string
 	//namesChans is defined only for performance purposes as to fast search by name
 	//iteration is done directly on slices as that is used very often and is about 50x
 	//faster then an iteration over a map
-	namesChans map[string]chan *common.SendableData
+	namesChans map[string]chan *p2p.SendableData
 	cancelFunc context.CancelFunc
 	ctx        context.Context //we need the context saved here in order to call appendChannel from exported func AddChannel
 }
@@ -32,10 +32,10 @@ func NewOutgoingChannelLoadBalancer() *OutgoingChannelLoadBalancer {
 	ctx, cancelFunc := context.WithCancel(context.Background())
 
 	oclb := &OutgoingChannelLoadBalancer{
-		chans:      make([]chan *common.SendableData, 0),
+		chans:      make([]chan *p2p.SendableData, 0),
 		names:      make([]string, 0),
-		namesChans: make(map[string]chan *common.SendableData),
-		mainChan:   make(chan *common.SendableData),
+		namesChans: make(map[string]chan *p2p.SendableData),
+		mainChan:   make(chan *p2p.SendableData),
 		cancelFunc: cancelFunc,
 		ctx:        ctx,
 	}
@@ -47,13 +47,13 @@ func NewOutgoingChannelLoadBalancer() *OutgoingChannelLoadBalancer {
 
 func (oplb *OutgoingChannelLoadBalancer) appendChannel(channel string) {
 	oplb.names = append(oplb.names, channel)
-	ch := make(chan *common.SendableData)
+	ch := make(chan *p2p.SendableData)
 	oplb.chans = append(oplb.chans, ch)
 	oplb.namesChans[channel] = ch
 
 	go func() {
 		for {
-			var obj *common.SendableData
+			var obj *p2p.SendableData
 
 			select {
 			case obj = <-ch:
@@ -70,7 +70,7 @@ func (oplb *OutgoingChannelLoadBalancer) appendChannel(channel string) {
 // AddChannel adds a new channel to the throttler, if it does not exists
 func (oplb *OutgoingChannelLoadBalancer) AddChannel(channel string) error {
 	if channel == defaultSendChannel {
-		return common.ErrChannelCanNotBeReAdded
+		return p2p.ErrChannelCanNotBeReAdded
 	}
 
 	oplb.mut.Lock()
@@ -90,7 +90,7 @@ func (oplb *OutgoingChannelLoadBalancer) AddChannel(channel string) error {
 // RemoveChannel removes an existing channel from the throttler
 func (oplb *OutgoingChannelLoadBalancer) RemoveChannel(channel string) error {
 	if channel == defaultSendChannel {
-		return common.ErrChannelCanNotBeDeleted
+		return p2p.ErrChannelCanNotBeDeleted
 	}
 
 	oplb.mut.Lock()
@@ -106,7 +106,7 @@ func (oplb *OutgoingChannelLoadBalancer) RemoveChannel(channel string) error {
 	}
 
 	if index == -1 {
-		return common.ErrChannelDoesNotExist
+		return p2p.ErrChannelDoesNotExist
 	}
 
 	sendableChan := oplb.chans[index]
@@ -128,7 +128,7 @@ func (oplb *OutgoingChannelLoadBalancer) RemoveChannel(channel string) error {
 }
 
 // GetChannelOrDefault fetches the required channel or the default if the channel is not present
-func (oplb *OutgoingChannelLoadBalancer) GetChannelOrDefault(channel string) chan *common.SendableData {
+func (oplb *OutgoingChannelLoadBalancer) GetChannelOrDefault(channel string) chan *p2p.SendableData {
 	oplb.mut.RLock()
 	defer oplb.mut.RUnlock()
 
@@ -141,7 +141,7 @@ func (oplb *OutgoingChannelLoadBalancer) GetChannelOrDefault(channel string) cha
 }
 
 // CollectOneElementFromChannels gets the waiting object from mainChan. It is a blocking call.
-func (oplb *OutgoingChannelLoadBalancer) CollectOneElementFromChannels() *common.SendableData {
+func (oplb *OutgoingChannelLoadBalancer) CollectOneElementFromChannels() *p2p.SendableData {
 	select {
 	case obj := <-oplb.mainChan:
 		return obj

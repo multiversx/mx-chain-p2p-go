@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ElrondNetwork/elrond-go-p2p/common"
+	"github.com/ElrondNetwork/elrond-go-p2p"
 	"github.com/ElrondNetwork/elrond-go-p2p/loadBalancer"
 	"github.com/stretchr/testify/assert"
 )
@@ -86,7 +86,7 @@ func TestOutgoingChannelLoadBalancer_AddChannelDefaultChannelShouldErr(t *testin
 
 	err := oclb.AddChannel(loadBalancer.DefaultSendChannel())
 
-	assert.Equal(t, common.ErrChannelCanNotBeReAdded, err)
+	assert.Equal(t, p2p.ErrChannelCanNotBeReAdded, err)
 }
 
 func TestOutgoingChannelLoadBalancer_AddChannelReAddChannelShouldDoNothing(t *testing.T) {
@@ -110,7 +110,7 @@ func TestOutgoingChannelLoadBalancer_RemoveChannelRemoveDefaultShouldErr(t *test
 
 	err := oclb.RemoveChannel(loadBalancer.DefaultSendChannel())
 
-	assert.Equal(t, common.ErrChannelCanNotBeDeleted, err)
+	assert.Equal(t, p2p.ErrChannelCanNotBeDeleted, err)
 }
 
 func TestOutgoingChannelLoadBalancer_RemoveChannelRemoveNotFoundChannelShouldErr(t *testing.T) {
@@ -120,7 +120,7 @@ func TestOutgoingChannelLoadBalancer_RemoveChannelRemoveNotFoundChannelShouldErr
 
 	err := oclb.RemoveChannel("test")
 
-	assert.Equal(t, common.ErrChannelDoesNotExist, err)
+	assert.Equal(t, p2p.ErrChannelDoesNotExist, err)
 }
 
 func TestOutgoingChannelLoadBalancer_RemoveChannelRemoveLastChannelAddedShouldWork(t *testing.T) {
@@ -238,8 +238,8 @@ func TestOutgoingChannelLoadBalancer_CollectOneElementFromChannelsShouldWork(t *
 
 	_ = oclb.AddChannel("test")
 
-	obj1 := &common.SendableData{Topic: "test"}
-	obj2 := &common.SendableData{Topic: "default"}
+	obj1 := &p2p.SendableData{Topic: "test"}
+	obj2 := &p2p.SendableData{Topic: "default"}
 
 	chanDone := make(chan bool)
 	wg := sync.WaitGroup{}

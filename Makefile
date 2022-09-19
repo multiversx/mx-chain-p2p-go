@@ -1,3 +1,8 @@
 test:
-	@echo "  >  Running unit tests"
-	go test -cover -race -coverprofile=coverage.txt -covermode=atomic -v ./...
+	@echo "  >  Running unit tests without race detector"
+	go test ./...
+
+test-race:
+	@echo "  >  Running unit tests with race detector"
+	go test -short -race ./...
+
