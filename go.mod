@@ -21,6 +21,8 @@ require (
 	github.com/whyrusleeping/timecache v0.0.0-20160911033111-cfcb2f1abfee
 )
 
+replace github.com/gogo/protobuf => github.com/ElrondNetwork/protobuf v1.3.2
+
 require (
 	github.com/benbjohnson/clock v1.3.0 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
