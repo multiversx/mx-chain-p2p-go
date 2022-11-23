@@ -3,10 +3,10 @@ module github.com/ElrondNetwork/elrond-go-p2p
 go 1.17
 
 require (
-	github.com/ElrondNetwork/elrond-go-core v1.1.26-0.20221122132700-01ef9fc95877
-	github.com/ElrondNetwork/elrond-go-crypto v1.2.2-0.20221122142028-1018f1cf6d94
-	github.com/ElrondNetwork/elrond-go-logger v1.0.10-0.20221122135106-8930f8cd9e46
-	github.com/ElrondNetwork/elrond-go-storage v1.0.2-0.20221122152445-ca9b4d907a57
+	github.com/ElrondNetwork/elrond-go-core v1.1.26-0.20221123085822-f43d6bc3f56c
+	github.com/ElrondNetwork/elrond-go-crypto v1.2.2-0.20221123100725-da401911b9ad
+	github.com/ElrondNetwork/elrond-go-logger v1.0.10-0.20221123090326-b29b6e6dc1f7
+	github.com/ElrondNetwork/elrond-go-storage v1.0.2-0.20221123101828-f4d5e9e92132
 	github.com/gogo/protobuf v1.3.2
 	github.com/ipfs/go-log v1.0.5
 	github.com/jbenet/goprocess v0.1.4
@@ -114,11 +114,11 @@ require (
 	go.uber.org/atomic v1.10.0 // indirect
 	go.uber.org/multierr v1.8.0 // indirect
 	go.uber.org/zap v1.22.0 // indirect
-	golang.org/x/crypto v0.0.0-20220525230936-793ad666bf5e // indirect
+	golang.org/x/crypto v0.3.0 // indirect
 	golang.org/x/mod v0.6.0-dev.0.20220419223038-86c51ed26bb4 // indirect
-	golang.org/x/net v0.0.0-20220812174116-3211cb980234 // indirect
+	golang.org/x/net v0.2.0 // indirect
 	golang.org/x/sync v0.0.0-20220722155255-886fb9371eb4 // indirect
-	golang.org/x/sys v0.0.0-20220811171246-fbc7d0a398ab // indirect
+	golang.org/x/sys v0.2.0 // indirect
 	golang.org/x/tools v0.1.12 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/tomb.v1 v1.0.0-20141024135613-dd632973f1e7 // indirect
