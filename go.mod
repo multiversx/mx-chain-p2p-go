@@ -3,10 +3,10 @@ module github.com/ElrondNetwork/elrond-go-p2p
 go 1.17
 
 require (
-	github.com/ElrondNetwork/elrond-go-core v1.1.26-0.20221123085822-f43d6bc3f56c
-	github.com/ElrondNetwork/elrond-go-crypto v1.2.2-0.20221123100725-da401911b9ad
-	github.com/ElrondNetwork/elrond-go-logger v1.0.10-0.20221123090326-b29b6e6dc1f7
-	github.com/ElrondNetwork/elrond-go-storage v1.0.2-0.20221123101828-f4d5e9e92132
+	github.com/ElrondNetwork/elrond-go-core v1.1.26
+	github.com/ElrondNetwork/elrond-go-crypto v1.2.2
+	github.com/ElrondNetwork/elrond-go-logger v1.0.10
+	github.com/ElrondNetwork/elrond-go-storage v1.0.2
 	github.com/gogo/protobuf v1.3.2
 	github.com/ipfs/go-log v1.0.5
 	github.com/jbenet/goprocess v0.1.4
