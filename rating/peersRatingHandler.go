@@ -197,7 +197,8 @@ func (prh *peersRatingHandler) markKeysForRemoval(cachedPIDs [][]byte, receivedP
 func (prh *peersRatingHandler) processLoop(ctx context.Context) {
 	timerCachersSweep := time.NewTimer(prh.timeBetweenCachersSweep)
 	timerMetricsUpdate := time.NewTimer(prh.timeBetweenMetricsUpdate)
-	timerDisplayCachers := time.NewTimer(time.Second * 30)
+	displayCachersTime := time.Second * 15
+	timerDisplayCachers := time.NewTimer(displayCachersTime)
 
 	defer timerCachersSweep.Stop()
 	defer timerMetricsUpdate.Stop()
@@ -215,7 +216,7 @@ func (prh *peersRatingHandler) processLoop(ctx context.Context) {
 			timerMetricsUpdate.Reset(prh.timeBetweenMetricsUpdate)
 		case <-timerDisplayCachers.C:
 			prh.displayCachers()
-			timerDisplayCachers.Reset(time.Second * 30)
+			timerDisplayCachers.Reset(displayCachersTime)
 		}
 	}
 }
