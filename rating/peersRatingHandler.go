@@ -197,9 +197,11 @@ func (prh *peersRatingHandler) markKeysForRemoval(cachedPIDs [][]byte, receivedP
 func (prh *peersRatingHandler) processLoop(ctx context.Context) {
 	timerCachersSweep := time.NewTimer(prh.timeBetweenCachersSweep)
 	timerMetricsUpdate := time.NewTimer(prh.timeBetweenMetricsUpdate)
+	timerDisplayCachers := time.NewTimer(time.Second * 30)
 
 	defer timerCachersSweep.Stop()
 	defer timerMetricsUpdate.Stop()
+	defer timerDisplayCachers.Stop()
 
 	for {
 		select {
@@ -211,6 +213,9 @@ func (prh *peersRatingHandler) processLoop(ctx context.Context) {
 		case <-timerMetricsUpdate.C:
 			prh.updateMetrics()
 			timerMetricsUpdate.Reset(prh.timeBetweenMetricsUpdate)
+		case <-timerDisplayCachers.C:
+			prh.displayCachers()
+			timerDisplayCachers.Reset(time.Second * 30)
 		}
 	}
 }
@@ -393,6 +398,44 @@ func (prh *peersRatingHandler) updateMetrics() {
 	}
 
 	prh.appStatusHandler.SetStringValue(p2p.MetricP2PPeersRating, string(jsonMap))
+}
+
+func (prh *peersRatingHandler) displayCachers() {
+	prh.mut.RLock()
+	defer prh.mut.RUnlock()
+
+	displayMsg := fmt.Sprintf("testing- Ratings cachers\nTop rated:%s\nBad rated:%s", getPrintableRatings(prh.topRatedCache), getPrintableRatings(prh.badRatedCache))
+	displayMsg += fmt.Sprintf("\nCurrent timestamp: %d", prh.getTimeHandler().Unix())
+	displayMsg += "\nMarked for removal:"
+	if len(prh.removalTimestampsMap) == 0 {
+		displayMsg += " none"
+	} else {
+		for pid, timestamp := range prh.removalTimestampsMap {
+			displayMsg += fmt.Sprintf("\npeerID: %s, removal timestamp: %d", pid, timestamp)
+		}
+	}
+	log.Debug(displayMsg)
+}
+
+func getPrintableRatings(cache types.Cacher) string {
+	keys := cache.Keys()
+	ratings := ""
+	for _, key := range keys {
+		rating, ok := cache.Get(key)
+		if !ok {
+			continue
+		}
+
+		ratingInt, ok := rating.(int32)
+		if !ok {
+			log.Error("testing- could not cast to int32")
+			continue
+		}
+
+		ratings += fmt.Sprintf("\npeerID: %s, rating: %d", core.PeerID(key).Pretty(), ratingInt)
+	}
+
+	return ratings
 }
 
 // Close stops the go routines started by this instance
