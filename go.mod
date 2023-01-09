@@ -1,12 +1,8 @@
-module github.com/ElrondNetwork/elrond-go-p2p
+module github.com/mutliversx/mx-chain-p2p-go
 
 go 1.17
 
 require (
-	github.com/ElrondNetwork/elrond-go-core v1.1.26
-	github.com/ElrondNetwork/elrond-go-crypto v1.2.3
-	github.com/ElrondNetwork/elrond-go-logger v1.0.10
-	github.com/ElrondNetwork/elrond-go-storage v1.0.2
 	github.com/gogo/protobuf v1.3.2
 	github.com/ipfs/go-log v1.0.5
 	github.com/jbenet/goprocess v0.1.4
@@ -15,11 +11,15 @@ require (
 	github.com/libp2p/go-libp2p-kbucket v0.4.7
 	github.com/libp2p/go-libp2p-pubsub v0.8.1
 	github.com/multiformats/go-multiaddr v0.6.0
+	github.com/multiversx/mx-chain-core-go v1.1.30
+	github.com/multiversx/mx-chain-crypto-go v1.2.5
+	github.com/multiversx/mx-chain-logger-go v1.0.11
+	github.com/multiversx/mx-chain-storage-go v1.0.7
 	github.com/stretchr/testify v1.8.0
 	github.com/whyrusleeping/timecache v0.0.0-20160911033111-cfcb2f1abfee
 )
 
-replace github.com/gogo/protobuf => github.com/ElrondNetwork/protobuf v1.3.2
+replace github.com/gogo/protobuf => github.com/multiversx/protobuf v1.3.2
 
 require (
 	github.com/benbjohnson/clock v1.3.0 // indirect
