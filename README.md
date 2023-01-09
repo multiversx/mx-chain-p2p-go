@@ -1,7 +1,7 @@
-# elrond-go p2p components
+# mx-chain-go p2p components
 
 The `Messenger` interface with its implementation are 
-used to define the way to communicate between Elrond nodes. 
+used to define the way to communicate between Multiversx nodes. 
 
 There are 2 ways to send data to the other peers:
 1. Broadcasting messages on a `pubsub` using topics;
