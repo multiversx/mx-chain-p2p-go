@@ -1,4 +1,4 @@
-module github.com/mutliversx/mx-chain-p2p-go
+module github.com/multiversx/mx-chain-p2p-go
 
 go 1.17
 
