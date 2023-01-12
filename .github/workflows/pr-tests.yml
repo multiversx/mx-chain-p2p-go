@@ -3,12 +3,13 @@ name: Tests
 on:
   push:
     branches: [ master, rc/* ]
-  pull_request:
-    branches: [ master, rc/* ]
 
 jobs:
   test:
     name: Unit tests without race detector
+    on:
+      pull_request:
+        branches: [ master, rc/* ]
     runs-on: ubuntu-latest
     steps:
       - name: Set up Go 1.17.6
@@ -27,6 +28,9 @@ jobs:
         run: make test
   test-race:
     name: Unit tests with race detector
+    on:
+      pull_request:
+        branches: [ master, feat/*, rc/* ]
     runs-on: ubuntu-latest
     steps:
       - name: Set up Go 1.17.6
