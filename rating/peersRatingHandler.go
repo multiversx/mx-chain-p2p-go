@@ -412,7 +412,7 @@ func (prh *peersRatingHandler) displayCachers() {
 		displayMsg += " none"
 	} else {
 		for pid, timestamp := range prh.removalTimestampsMap {
-			displayMsg += fmt.Sprintf("\npeerID: %s, removal timestamp: %d", pid, timestamp)
+			displayMsg += fmt.Sprintf("\npeerID: %s, removal timestamp: %d", core.PeerID(pid).Pretty(), timestamp)
 		}
 	}
 	log.Debug(displayMsg)
