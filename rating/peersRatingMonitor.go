@@ -1,8 +1,10 @@
 package rating
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
+	"time"
 
 	"github.com/multiversx/mx-chain-core-go/core"
 	"github.com/multiversx/mx-chain-core-go/core/check"
@@ -23,6 +25,7 @@ type peersRatingMonitor struct {
 	topRatedCache       types.Cacher
 	badRatedCache       types.Cacher
 	connectionsProvider connectionsProvider
+	cancel              func()
 }
 
 // NewPeersRatingMonitor returns a new peers rating monitor
@@ -32,11 +35,15 @@ func NewPeersRatingMonitor(args ArgPeersRatingMonitor) (*peersRatingMonitor, err
 		return nil, err
 	}
 
-	return &peersRatingMonitor{
+	monitor := &peersRatingMonitor{
 		topRatedCache:       args.TopRatedCache,
 		badRatedCache:       args.BadRatedCache,
 		connectionsProvider: args.ConnectionsProvider,
-	}, nil
+	}
+
+	go monitor.processTestLogs(context.Background())
+
+	return monitor, nil
 }
 
 func checkMonitorArgs(args ArgPeersRatingMonitor) error {
@@ -51,6 +58,50 @@ func checkMonitorArgs(args ArgPeersRatingMonitor) error {
 	}
 
 	return nil
+}
+
+func (monitor *peersRatingMonitor) processTestLogs(ctx context.Context) {
+	displayCachersTime := time.Second * 10
+	timerDisplayCachers := time.NewTimer(displayCachersTime)
+	defer timerDisplayCachers.Stop()
+
+	for {
+		select {
+		case <-ctx.Done():
+			log.Debug("testing- closing processTestLogs")
+			return
+		case <-timerDisplayCachers.C:
+			monitor.displayCachers()
+			timerDisplayCachers.Reset(displayCachersTime)
+		}
+	}
+}
+
+func (monitor *peersRatingMonitor) displayCachers() {
+	displayMsg := fmt.Sprintf("testing- Ratings cachers\nTop rated:%s\nBad rated:%s", getPrintableRatings(monitor.topRatedCache), getPrintableRatings(monitor.badRatedCache))
+	displayMsg += fmt.Sprintf("\ntesting- Connected peers ratings:\n%s", monitor.GetConnectedPeersRatings())
+	log.Debug(displayMsg)
+}
+
+func getPrintableRatings(cache types.Cacher) string {
+	keys := cache.Keys()
+	ratings := ""
+	for _, key := range keys {
+		rating, ok := cache.Get(key)
+		if !ok {
+			continue
+		}
+
+		ratingInt, ok := rating.(int32)
+		if !ok {
+			log.Error("testing- could not cast to int32")
+			continue
+		}
+
+		ratings += fmt.Sprintf("\npeerID: %s, rating: %d", core.PeerID(key).Pretty(), ratingInt)
+	}
+
+	return ratings
 }
 
 // GetConnectedPeersRatings returns the ratings of the current connected peers

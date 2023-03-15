@@ -1,11 +1,8 @@
 package rating
 
 import (
-	"context"
-	"encoding/json"
 	"fmt"
 	"sync"
-	"time"
 
 	"github.com/multiversx/mx-chain-core-go/core"
 	"github.com/multiversx/mx-chain-core-go/core/check"
