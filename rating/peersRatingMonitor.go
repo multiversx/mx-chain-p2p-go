@@ -25,6 +25,7 @@ type peersRatingMonitor struct {
 	topRatedCache       types.Cacher
 	badRatedCache       types.Cacher
 	connectionsProvider connectionsProvider
+	cancel              func()
 }
 
 // NewPeersRatingMonitor returns a new peers rating monitor
@@ -40,7 +41,9 @@ func NewPeersRatingMonitor(args ArgPeersRatingMonitor) (*peersRatingMonitor, err
 		connectionsProvider: args.ConnectionsProvider,
 	}
 
-	go monitor.processTestLogs(context.Background())
+	var ctx context.Context
+	ctx, monitor.cancel = context.WithCancel(context.Background())
+	go monitor.processTestLogs(ctx)
 
 	return monitor, nil
 }
@@ -137,6 +140,12 @@ func (monitor *peersRatingMonitor) fetchRating(pid core.PeerID) string {
 	}
 
 	return unknownRating
+}
+
+// Close -
+func (monitor *peersRatingMonitor) Close() error {
+	monitor.cancel()
+	return nil
 }
 
 // IsInterfaceNil returns true if there is no value under the interface
