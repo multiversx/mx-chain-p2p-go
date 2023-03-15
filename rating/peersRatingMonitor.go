@@ -25,7 +25,6 @@ type peersRatingMonitor struct {
 	topRatedCache       types.Cacher
 	badRatedCache       types.Cacher
 	connectionsProvider connectionsProvider
-	cancel              func()
 }
 
 // NewPeersRatingMonitor returns a new peers rating monitor
