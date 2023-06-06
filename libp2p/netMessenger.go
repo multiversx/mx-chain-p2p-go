@@ -267,12 +267,7 @@ func constructNodeWithPortRetry(
 
 func setupExternalP2PLoggers() {
 	for _, external := range externalPackages {
-		logLevel := logger.GetLoggerLogLevel("external/" + external)
-		if logLevel > logger.LogTrace {
-			continue
-		}
-
-		_ = logging.SetLogLevel(external, "TRACE")
+		_ = logging.SetLogLevel(external, "DEBUG")
 	}
 }
 
