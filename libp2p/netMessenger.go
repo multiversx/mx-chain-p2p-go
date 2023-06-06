@@ -76,7 +76,7 @@ var maxSendBuffSize = (1 << 21) - messageHeader
 var log = logger.GetOrCreate("p2p/libp2p")
 
 var _ p2p.Messenger = (*networkMessenger)(nil)
-var externalPackages = []string{"dht", "nat", "basichost", "pubsub"}
+var externalPackages = []string{"dht", "nat", "basichost", "pubsub", "swarm2"}
 
 func init() {
 	pubsub.TimeCacheDuration = pubsubTimeCacheDuration
