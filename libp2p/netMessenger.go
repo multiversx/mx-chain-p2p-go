@@ -76,7 +76,11 @@ var maxSendBuffSize = (1 << 21) - messageHeader
 var log = logger.GetOrCreate("p2p/libp2p")
 
 var _ p2p.Messenger = (*networkMessenger)(nil)
-var externalPackages = []string{"dht", "nat", "basichost", "pubsub", "swarm2"}
+var externalPackages = []string{"dht", "nat", "basichost", "pubsub", "swarm2", "providers", "dht/RtRefreshManager", "table",
+	"diversityFilter", "p2p-config", "canonical-log", "discovery-backoff", "autonat", "autorelay", "blankhost",
+	"peerstore", "pstoremanager", "rcmgr", "routedhost", "connmgr", "reuseport-transport", "upgrader", "relay",
+	"p2p-circuit", "p2p-holepunch", "net/identify", "ping", "quic-transport", "tcp-tpt",
+}
 
 func init() {
 	pubsub.TimeCacheDuration = pubsubTimeCacheDuration
@@ -267,7 +271,7 @@ func constructNodeWithPortRetry(
 
 func setupExternalP2PLoggers() {
 	for _, external := range externalPackages {
-		_ = logging.SetLogLevel(external, "DEBUG")
+		_ = logging.SetLogLevel(external, "TRACE")
 	}
 }
 
