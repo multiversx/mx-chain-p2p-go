@@ -25,6 +25,7 @@ import (
 	commonCrypto "github.com/multiversx/mx-chain-crypto-go"
 	"github.com/multiversx/mx-chain-crypto-go/signing"
 	"github.com/multiversx/mx-chain-crypto-go/signing/secp256k1"
+	"github.com/multiversx/mx-chain-crypto-go/signing/secp256k1/singlesig"
 	logger "github.com/multiversx/mx-chain-logger-go"
 	p2p "github.com/multiversx/mx-chain-p2p-go"
 	"github.com/multiversx/mx-chain-p2p-go/config"
@@ -2155,4 +2156,135 @@ func TestNetworkMessenger_AddPeerTopicNotifier(t *testing.T) {
 		assert.True(t, peersOnTopicsFound[messenger2.ID()]["topic2"] >= 2)
 		mut.RUnlock()
 	})
+}
+
+func TestNetworkMessenger_ConnectToPeer(t *testing.T) {
+	keyGen := signing.NewKeyGenerator(secp256k1.NewSecp256k1())
+	prvKeySeeder, _ := keyGen.GeneratePair()
+
+	logger.SetLogLevel("*:DEBUG")
+
+	port := 10000
+	argsSeeder := libp2p.ArgsNetworkMessenger{
+		Marshalizer:   &mock.ProtoMarshallerMock{},
+		ListenAddress: "/ip4/0.0.0.0/tcp/",
+		P2pConfig: config.P2PConfig{
+			Node: config.NodeConfig{
+				Port: fmt.Sprintf("%d", port),
+			},
+			KadDhtPeerDiscovery: config.KadDhtPeerDiscoveryConfig{
+				Enabled:                          true,
+				ProtocolID:                       "/erd/kad/1.1.0",
+				Type:                             "optimized",
+				RefreshIntervalInSec:             10,
+				BucketSize:                       100,
+				RoutingTableRefreshIntervalInSec: 300,
+				// InitialPeerList:                  []string{"/dns4/seed1.mainnet.multiversx.com/tcp/10000/p2p/16Uiu2HAmQihd2Di6JrDCRf6bnxXEmgfFy8C3S7WDnq7WNXscfkrG"},
+				InitialPeerList: []string{"/ip4/64.226.107.254/tcp/10000/p2p/16Uiu2HAmHLYHVR1CvVc8ksQ3mfqG5xfGSk7fSCtGUKaQbvxgv7Lu"},
+			},
+			Sharding: config.ShardingConfig{
+				Type: p2p.NilListSharder,
+			},
+		},
+		SyncTimer:             &libp2p.LocalSyncTimer{},
+		PreferredPeersHolder:  &mock.PeersHolderStub{},
+		PeersRatingHandler:    &mock.PeersRatingHandlerStub{},
+		ConnectionWatcherType: p2p.ConnectionWatcherTypeDisabled,
+		P2pPrivateKey:         prvKeySeeder,
+		P2pSingleSigner:       &singlesig.Secp256k1Signer{},
+		P2pKeyGenerator:       keyGen,
+	}
+
+	seeder, err := libp2p.NewNetworkMessenger(argsSeeder)
+	require.Nil(t, err)
+
+	_ = seeder.Bootstrap()
+
+	for {
+		addresses := seeder.Addresses()
+		numConnected := len(seeder.ConnectedAddresses())
+		printAddresses(addresses, numConnected)
+
+		time.Sleep(time.Second)
+
+		if numConnected > 0 {
+			break
+		}
+	}
+	//
+	//seederPublicAddress, err := filterPublicAddress(seeder.Addresses())
+	//require.Nil(t, err)
+	//
+	//prvKeyPeer, _ := keyGen.GeneratePair()
+	//argsPeer := libp2p.ArgsNetworkMessenger{
+	//	Marshalizer:   &mock.ProtoMarshallerMock{},
+	//	ListenAddress: "/ip4/127.0.0.1/tcp/",
+	//	P2pConfig: config.P2PConfig{
+	//		Node: config.NodeConfig{
+	//			Port: fmt.Sprintf("%d", port+1),
+	//		},
+	//		KadDhtPeerDiscovery: config.KadDhtPeerDiscoveryConfig{
+	//			Enabled:                          true,
+	//			ProtocolID:                       "/erd/kad/1.1.0",
+	//			Type:                             "optimized",
+	//			RefreshIntervalInSec:             10,
+	//			BucketSize:                       100,
+	//			RoutingTableRefreshIntervalInSec: 300,
+	//			InitialPeerList:                  []string{seederPublicAddress},
+	//		},
+	//		Sharding: config.ShardingConfig{
+	//			Type: p2p.NilListSharder,
+	//		},
+	//	},
+	//	SyncTimer:             &libp2p.LocalSyncTimer{},
+	//	PreferredPeersHolder:  &mock.PeersHolderStub{},
+	//	PeersRatingHandler:    &mock.PeersRatingHandlerStub{},
+	//	ConnectionWatcherType: p2p.ConnectionWatcherTypeDisabled,
+	//	P2pPrivateKey:         prvKeyPeer,
+	//	P2pSingleSigner:       &singlesig.Secp256k1Signer{},
+	//	P2pKeyGenerator:       keyGen,
+	//}
+	//peer1, err := libp2p.NewNetworkMessenger(argsPeer)
+	//require.Nil(t, err)
+	//
+	//peer1.Bootstrap()
+	//
+	//for {
+	//
+	//	addresses := peer1.Addresses()
+	//	numConnected := len(peer1.ConnectedAddresses())
+	//	printAddresses(addresses, numConnected)
+	//
+	//	time.Sleep(time.Second)
+	//
+	//	if numConnected > 0 {
+	//		break
+	//	}
+	//}
+
+	_ = seeder.Close()
+	//_ = peer1.Close()
+}
+
+func printAddresses(addresses []string, numConnected int) {
+	fmt.Println("bound interfaces")
+	for _, addr := range addresses {
+		fmt.Printf("   %s\n", addr)
+	}
+	fmt.Printf("num connected: %d\n\n", numConnected)
+}
+
+func filterPublicAddress(addresses []string) (string, error) {
+	for _, addr := range addresses {
+		if strings.Contains(addr, "127.0.0.1") {
+			continue
+		}
+		if strings.Contains(addr, "192.168.") {
+			continue
+		}
+
+		return addr, nil
+	}
+
+	return "", fmt.Errorf("public interface not found")
 }
