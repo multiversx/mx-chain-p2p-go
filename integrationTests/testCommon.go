@@ -167,6 +167,11 @@ func createP2PConfigWithNoDiscovery() config.P2PConfig {
 	return config.P2PConfig{
 		Node: config.NodeConfig{
 			Port: "0",
+			Transports: config.TransportConfig{
+				TCP: config.TCPProtocolConfig{
+					ListenAddress: libp2p.TestListenAddrWithIp4AndTcp,
+				},
+			},
 		},
 		KadDhtPeerDiscovery: config.KadDhtPeerDiscoveryConfig{
 			Enabled: false,
