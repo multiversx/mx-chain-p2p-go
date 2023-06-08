@@ -49,6 +49,10 @@ func createBaseArgs() libp2p.ArgsNetworkMessenger {
 }
 
 func TestPeerConnectionsOnAllSupportedProtocolsShouldExchangeData(t *testing.T) {
+	if testing.Short() {
+		t.Skip("this is not a short test")
+	}
+
 	messengers := make([]p2p.Messenger, 0)
 
 	seederArgs := createBaseArgs()
