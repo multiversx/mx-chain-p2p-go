@@ -111,7 +111,6 @@ func TestPeerConnectionsOnAllSupportedProtocolsShouldExchangeData(t *testing.T) 
 	require.Nil(t, err)
 	addressToConnect = getAddressMatching(seeder.Addresses(), "/quic-v1/", "")
 	err = webTransportPeer.ConnectToPeer(addressToConnect)
-	fmt.Println(webTransportPeer.ID().Pretty())
 	require.Nil(t, err)
 
 	// create a common topic on all messengers
@@ -150,11 +149,9 @@ func TestPeerConnectionsOnAllSupportedProtocolsShouldExchangeData(t *testing.T) 
 
 	mutMessages.Unlock()
 
-	defer func() {
-		for _, mes := range messengers {
-			_ = mes.Close()
-		}
-	}()
+	for _, mes := range messengers {
+		_ = mes.Close()
+	}
 }
 
 func getAddressMatching(addresses []string, including string, excluding string) string {

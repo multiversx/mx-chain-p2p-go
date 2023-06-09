@@ -2224,7 +2224,7 @@ func TestParseTransportOptions(t *testing.T) {
 			assert.Equal(t, "/ip4/127.0.0.1/tcp/100", addresses[0])
 			assert.Nil(t, err)
 		})
-		t.Run("without port reuse, should work", func(t *testing.T) {
+		t.Run("with port reuse, should work", func(t *testing.T) {
 			options, addresses, err := libp2p.ParseTransportOptions(
 				config.TransportConfig{
 					TCP: config.TCPProtocolConfig{

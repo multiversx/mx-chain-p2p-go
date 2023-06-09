@@ -262,13 +262,13 @@ func parseTransportOptions(configs config.TransportConfig, port int) ([]libp2p.O
 		}
 	}
 
-	quickAddress := configs.QUICAddress
-	if len(quickAddress) > 0 {
-		if !strictCheckStringForIntMarkup(quickAddress) {
+	quicAddress := configs.QUICAddress
+	if len(quicAddress) > 0 {
+		if !strictCheckStringForIntMarkup(quicAddress) {
 			return nil, nil, p2p.ErrInvalidQUICAddress
 		}
 
-		addresses = append(addresses, fmt.Sprintf(quickAddress, port))
+		addresses = append(addresses, fmt.Sprintf(quicAddress, port))
 		options = append(options, libp2p.Transport(quic.NewTransport))
 	}
 
