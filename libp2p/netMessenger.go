@@ -210,6 +210,11 @@ func constructNode(
 	options := []libp2p.Option{
 		libp2p.ListenAddrStrings(addresses...),
 		libp2p.Identity(p2pPrivateKey),
+		libp2p.DefaultMuxers,
+		libp2p.DefaultSecurity,
+		// we need to disable relay option in order to save the node's bandwidth as much as possible
+		libp2p.DisableRelay(),
+		libp2p.NATPortMap(),
 	}
 	options = append(options, transportOptions...)
 
