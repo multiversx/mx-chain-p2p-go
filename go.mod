@@ -21,6 +21,8 @@ require (
 
 replace github.com/gogo/protobuf => github.com/multiversx/protobuf v1.3.2
 
+replace github.com/libp2p/go-libp2p-pubsub => github.com/multiversx/go-libp2p-pubsub v0.3.3-0.20230620121142-4b0495618388
+
 require (
 	github.com/benbjohnson/clock v1.3.0 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
