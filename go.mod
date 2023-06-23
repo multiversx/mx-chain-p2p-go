@@ -10,7 +10,6 @@ require (
 	github.com/libp2p/go-libp2p-kad-dht v0.23.0
 	github.com/libp2p/go-libp2p-kbucket v0.5.0
 	github.com/libp2p/go-libp2p-pubsub v0.9.3
-	github.com/libp2p/go-msgio v0.3.0
 	github.com/multiformats/go-multiaddr v0.9.0
 	github.com/multiversx/mx-chain-core-go v1.1.30
 	github.com/multiversx/mx-chain-crypto-go v1.2.5
@@ -22,7 +21,7 @@ require (
 
 replace github.com/gogo/protobuf => github.com/multiversx/protobuf v1.3.2
 
-replace github.com/libp2p/go-libp2p-pubsub => github.com/multiversx/go-libp2p-pubsub v0.3.3-0.20230622123104-ead0242be4fe
+replace github.com/libp2p/go-libp2p-pubsub => github.com/multiversx/go-libp2p-pubsub v0.3.3-0.20230623103404-411bbc2f9446
 
 require (
 	github.com/benbjohnson/clock v1.3.0 // indirect
@@ -68,6 +67,7 @@ require (
 	github.com/libp2p/go-flow-metrics v0.1.0 // indirect
 	github.com/libp2p/go-libp2p-asn-util v0.3.0 // indirect
 	github.com/libp2p/go-libp2p-record v0.2.0 // indirect
+	github.com/libp2p/go-msgio v0.3.0 // indirect
 	github.com/libp2p/go-nat v0.1.0 // indirect
 	github.com/libp2p/go-netroute v0.2.1 // indirect
 	github.com/libp2p/go-reuseport v0.2.0 // indirect

@@ -198,11 +198,15 @@ func (ds *directSender) Send(topic string, buff []byte, peer core.PeerID) error 
 
 	err = w.WriteMsg(msg)
 	if err != nil {
+		_ = stream.Reset()
+		_ = stream.Close()
 		return err
 	}
 
 	err = bufw.Flush()
 	if err != nil {
+		_ = stream.Reset()
+		_ = stream.Close()
 		return err
 	}
 
