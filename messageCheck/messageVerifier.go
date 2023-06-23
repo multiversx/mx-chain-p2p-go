@@ -1,8 +1,8 @@
 package messagecheck
 
 import (
-	pubsub "github.com/libp2p/go-libp2p-pubsub"
-	pubsubPb "github.com/libp2p/go-libp2p-pubsub/pb"
+	pubsub "github.com/multiversx/go-libp2p-pubsub"
+	pubsubPb "github.com/multiversx/go-libp2p-pubsub/pb"
 	"github.com/multiversx/mx-chain-core-go/core/check"
 	"github.com/multiversx/mx-chain-core-go/data/batch"
 	"github.com/multiversx/mx-chain-core-go/marshal"

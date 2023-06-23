@@ -7,10 +7,10 @@ import (
 	"time"
 
 	"github.com/libp2p/go-libp2p"
-	pubsub "github.com/libp2p/go-libp2p-pubsub"
 	libp2pCrypto "github.com/libp2p/go-libp2p/core/crypto"
 	"github.com/libp2p/go-libp2p/core/host"
 	"github.com/libp2p/go-libp2p/core/peer"
+	pubsub "github.com/multiversx/go-libp2p-pubsub"
 )
 
 type messenger struct {
@@ -115,11 +115,11 @@ func printConnections(peers []*messenger) {
 
 // create8ConnectedPeers assembles a network as following:
 //
-//                             0------------------- 1
-//                             |                    |
-//        2 ------------------ 3 ------------------ 4
-//        |                    |                    |
-//        5                    6                    7
+//	                     0------------------- 1
+//	                     |                    |
+//	2 ------------------ 3 ------------------ 4
+//	|                    |                    |
+//	5                    6                    7
 func create8ConnectedPeers() []*messenger {
 	peers := make([]*messenger, 0)
 	for i := 0; i < 8; i++ {

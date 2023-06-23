@@ -9,8 +9,8 @@ require (
 	github.com/libp2p/go-libp2p v0.27.5
 	github.com/libp2p/go-libp2p-kad-dht v0.23.0
 	github.com/libp2p/go-libp2p-kbucket v0.5.0
-	github.com/libp2p/go-libp2p-pubsub v0.9.3
 	github.com/multiformats/go-multiaddr v0.9.0
+	github.com/multiversx/go-libp2p-pubsub v0.3.3-0.20230623141024-03d2ddf255ea
 	github.com/multiversx/mx-chain-core-go v1.1.30
 	github.com/multiversx/mx-chain-crypto-go v1.2.5
 	github.com/multiversx/mx-chain-logger-go v1.0.11
@@ -20,8 +20,6 @@ require (
 )
 
 replace github.com/gogo/protobuf => github.com/multiversx/protobuf v1.3.2
-
-replace github.com/libp2p/go-libp2p-pubsub => github.com/multiversx/go-libp2p-pubsub v0.3.3-0.20230623103404-411bbc2f9446
 
 require (
 	github.com/benbjohnson/clock v1.3.0 // indirect
