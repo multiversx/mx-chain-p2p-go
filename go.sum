@@ -207,7 +207,6 @@ github.com/edsrzf/mmap-go v1.0.0/go.mod h1:YO35OhQPt3KJa3ryjFM5Bs14WD66h8eGKpfaB
 github.com/elastic/gosigar v0.12.0/go.mod h1:iXRIGg2tLnu7LBdpqzyQfGDEidKCfWcCMS0WKyPWoMs=
 github.com/elastic/gosigar v0.14.2 h1:Dg80n8cr90OZ7x+bAax/QjoW/XqTI11RmA79ZwIm9/4=
 github.com/elastic/gosigar v0.14.2/go.mod h1:iXRIGg2tLnu7LBdpqzyQfGDEidKCfWcCMS0WKyPWoMs=
-github.com/emirpasic/gods v1.18.1/go.mod h1:8tpGGwCnJ5H4r6BWwaV6OrWmMoPhUl5jm/FMNAnJvWQ=
 github.com/envoyproxy/go-control-plane v0.6.9/go.mod h1:SBwIajubJHhxtWwsL9s8ss4safvEdbitLhGGK48rN6g=
 github.com/envoyproxy/go-control-plane v0.9.0/go.mod h1:YTl/9mNaCwkRvm6d1a2C3ymFceY/DCBVvsKhRF0iEA4=
 github.com/envoyproxy/go-control-plane v0.9.1-0.20191026205805-5f8ba28d4473/go.mod h1:YTl/9mNaCwkRvm6d1a2C3ymFceY/DCBVvsKhRF0iEA4=
@@ -1110,8 +1109,8 @@ github.com/multiformats/go-varint v0.0.6/go.mod h1:3Ls8CIEsrijN6+B7PbrXRPxHRPuXS
 github.com/multiformats/go-varint v0.0.7 h1:sWSGR+f/eu5ABZA2ZpYKBILXTTs9JWpdEM/nEGOHFS8=
 github.com/multiformats/go-varint v0.0.7/go.mod h1:r8PUYw/fD/SjBCiKOoDlGF6QawOELpZAu9eioSos/OU=
 github.com/multiversx/concurrent-map v0.1.4/go.mod h1:8cWFRJDOrWHOTNSqgYCUvwT7c7eFQ4U2vKMOp4A/9+o=
-github.com/multiversx/go-libp2p-pubsub v0.3.3-0.20230623141024-03d2ddf255ea h1:3JPDQGWdFhXVlv9sm7Hl+S/B12en9VAZCvTtAdgGrNQ=
-github.com/multiversx/go-libp2p-pubsub v0.3.3-0.20230623141024-03d2ddf255ea/go.mod h1:EwyNvGljMVFh70qjJ7jg8i6GEfOwxT6gDWpEYmTKarQ=
+github.com/multiversx/go-libp2p-pubsub v0.3.3-0.20230626075741-96efbbd7468d h1:kW5PB4znjwr4omM5EP26HO6DTzjBkqcxsWUG+HoiBf4=
+github.com/multiversx/go-libp2p-pubsub v0.3.3-0.20230626075741-96efbbd7468d/go.mod h1:wVAupqre8GnHJAwj0XnSMbF3BnMmwtBXiagssBDOWW8=
 github.com/multiversx/mx-chain-core-go v1.1.30 h1:BtURR4I6HU1OnSbxcPMTQSQXNqtOuH3RW6bg5N7FSM0=
 github.com/multiversx/mx-chain-core-go v1.1.30/go.mod h1:8gGEQv6BWuuJwhd25qqhCOZbBSv9mk+hLeKvinSaSMk=
 github.com/multiversx/mx-chain-crypto-go v1.2.5 h1:tuq3BUNMhKud5DQbZi9DiVAAHUXypizy8zPH0NpTGZk=
