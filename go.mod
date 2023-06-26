@@ -10,7 +10,7 @@ require (
 	github.com/libp2p/go-libp2p-kad-dht v0.23.0
 	github.com/libp2p/go-libp2p-kbucket v0.5.0
 	github.com/multiformats/go-multiaddr v0.9.0
-	github.com/multiversx/go-libp2p-pubsub v0.3.3-0.20230626141129-a0af0c20dfd9
+	github.com/multiversx/go-libp2p-pubsub v0.3.3-0.20230626143524-9482af051347
 	github.com/multiversx/mx-chain-core-go v1.1.30
 	github.com/multiversx/mx-chain-crypto-go v1.2.5
 	github.com/multiversx/mx-chain-logger-go v1.0.11
