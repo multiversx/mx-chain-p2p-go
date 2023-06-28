@@ -12,11 +12,11 @@ import (
 	"time"
 
 	ggio "github.com/gogo/protobuf/io"
+	pubsub "github.com/libp2p/go-libp2p-pubsub"
+	pubsubPb "github.com/libp2p/go-libp2p-pubsub/pb"
 	"github.com/libp2p/go-libp2p/core/host"
 	"github.com/libp2p/go-libp2p/core/network"
 	"github.com/libp2p/go-libp2p/core/peer"
-	pubsub "github.com/multiversx/go-libp2p-pubsub"
-	pubsubPb "github.com/multiversx/go-libp2p-pubsub/pb"
 	"github.com/multiversx/mx-chain-core-go/core"
 	"github.com/multiversx/mx-chain-core-go/core/check"
 	p2p "github.com/multiversx/mx-chain-p2p-go"

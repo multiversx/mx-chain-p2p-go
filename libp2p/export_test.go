@@ -5,10 +5,10 @@ import (
 	"time"
 
 	"github.com/libp2p/go-libp2p"
+	pubsub "github.com/libp2p/go-libp2p-pubsub"
+	pb "github.com/libp2p/go-libp2p-pubsub/pb"
 	"github.com/libp2p/go-libp2p/core/network"
 	"github.com/libp2p/go-libp2p/core/peer"
-	pubsub "github.com/multiversx/go-libp2p-pubsub"
-	pb "github.com/multiversx/go-libp2p-pubsub/pb"
 	"github.com/multiversx/mx-chain-core-go/core"
 	p2p "github.com/multiversx/mx-chain-p2p-go"
 	"github.com/multiversx/mx-chain-p2p-go/config"

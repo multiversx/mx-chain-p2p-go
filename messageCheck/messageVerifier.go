@@ -1,8 +1,8 @@
 package messagecheck
 
 import (
-	pubsub "github.com/multiversx/go-libp2p-pubsub"
-	pubsubPb "github.com/multiversx/go-libp2p-pubsub/pb"
+	pubsub "github.com/libp2p/go-libp2p-pubsub"
+	pubsubPb "github.com/libp2p/go-libp2p-pubsub/pb"
 	"github.com/multiversx/mx-chain-core-go/core/check"
 	"github.com/multiversx/mx-chain-core-go/data/batch"
 	"github.com/multiversx/mx-chain-core-go/marshal"
@@ -182,9 +182,9 @@ func (m *messageVerifier) Deserialize(messagesBytes []byte) ([]p2p.MessageP2P, e
 			return nil, err
 		}
 
-		p2pMsg, err := convertPubSubMessagestoP2PMessage(&pubsubMsg, m.marshaller)
-		if err != nil {
-			log.Trace("convertPubSubMessagestoP2PMessage", "error", err.Error())
+		p2pMsg, errConvert := convertPubSubMessagestoP2PMessage(&pubsubMsg, m.marshaller)
+		if errConvert != nil {
+			log.Trace("convertPubSubMessagestoP2PMessage", "error", errConvert.Error())
 			continue
 		}
 
