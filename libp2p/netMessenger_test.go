@@ -68,9 +68,9 @@ func waitDoneWithTimeout(t *testing.T, chanDone chan bool, timeout time.Duration
 }
 
 func prepareMessengerForMatchDataReceive(messenger p2p.Messenger, matchData []byte, wg *sync.WaitGroup, checkSigSize func(sigSize int) bool) {
-	err := messenger.CreateTopic(testTopic, false)
+	_ = messenger.CreateTopic(testTopic, false)
 
-	err = messenger.RegisterMessageProcessor(testTopic, "identifier",
+	_ = messenger.RegisterMessageProcessor(testTopic, "identifier",
 		&mock.MessageProcessorStub{
 			ProcessMessageCalled: func(message p2p.MessageP2P, _ core.PeerID) error {
 				if !bytes.Equal(matchData, message.Data()) {
@@ -88,7 +88,6 @@ func prepareMessengerForMatchDataReceive(messenger p2p.Messenger, matchData []by
 				return nil
 			},
 		})
-	_ = err
 }
 
 func getConnectableAddress(messenger p2p.Messenger) string {
@@ -105,7 +104,7 @@ func getConnectableAddress(messenger p2p.Messenger) string {
 
 func createMockNetworkArgs() libp2p.ArgsNetworkMessenger {
 	return libp2p.ArgsNetworkMessenger{
-		Marshalizer:   &mock.ProtoMarshallerMock{},
+		Marshaller:    &mock.ProtoMarshallerMock{},
 		ListenAddress: libp2p.TestListenAddrWithIp4AndTcp,
 		P2pConfig: config.P2PConfig{
 			Node: config.NodeConfig{
@@ -211,15 +210,15 @@ func TestNewMemoryLibp2pMessenger_OkValsWithoutDiscoveryShouldWork(t *testing.T)
 func TestNewNetworkMessenger_NilChecksShouldErr(t *testing.T) {
 	t.Parallel()
 
-	t.Run("nil messenger", func(t *testing.T) {
+	t.Run("nil marshaller", func(t *testing.T) {
 		t.Parallel()
 
 		arg := createMockNetworkArgs()
-		arg.Marshalizer = nil
+		arg.Marshaller = nil
 		messenger, err := libp2p.NewNetworkMessenger(arg)
 
 		assert.True(t, check.IfNil(messenger))
-		assert.True(t, errors.Is(err, p2p.ErrNilMarshalizer))
+		assert.True(t, errors.Is(err, p2p.ErrNilMarshaller))
 	})
 
 	t.Run("nil preferred peers holder", func(t *testing.T) {
@@ -286,6 +285,20 @@ func TestNewNetworkMessenger_NilChecksShouldErr(t *testing.T) {
 
 		assert.True(t, check.IfNil(messenger))
 		assert.True(t, errors.Is(err, p2p.ErrNilP2pKeyGenerator))
+	})
+
+	t.Run("self id as seeder should error", func(t *testing.T) {
+		t.Parallel()
+
+		arg := createMockNetworkArgs()
+		p2pPrivateKey, _ := p2pCrypto.ConvertPrivateKeyToLibp2pPrivateKey(arg.P2pPrivateKey)
+		pid, _ := peer.IDFromPublicKey(p2pPrivateKey.GetPublic())
+		connString := "/ip4/127.0.0.1/tcp/9999/" + pid.String()
+		arg.P2pConfig.KadDhtPeerDiscovery.InitialPeerList = []string{connString}
+		messenger, err := libp2p.NewNetworkMessenger(arg)
+
+		assert.True(t, check.IfNil(messenger))
+		assert.True(t, errors.Is(err, p2p.ErrInvalidConfig))
 	})
 }
 
@@ -1129,7 +1142,7 @@ func TestLibp2pMessenger_SendDirectWithRealMessengersShouldWork(t *testing.T) {
 	msg := []byte("test message")
 
 	args := libp2p.ArgsNetworkMessenger{
-		Marshalizer:   &mock.ProtoMarshallerMock{},
+		Marshaller:    &mock.ProtoMarshallerMock{},
 		ListenAddress: libp2p.TestListenAddrWithIp4AndTcp,
 		P2pConfig: config.P2PConfig{
 			Node: config.NodeConfig{
@@ -1203,7 +1216,7 @@ func TestLibp2pMessenger_SendDirectWithRealMessengersWithoutSignatureShouldWork(
 	msg := []byte("test message")
 
 	args := libp2p.ArgsNetworkMessenger{
-		Marshalizer:   &mock.ProtoMarshallerMock{},
+		Marshaller:    &mock.ProtoMarshallerMock{},
 		ListenAddress: libp2p.TestListenAddrWithIp4AndTcp,
 		P2pConfig: config.P2PConfig{
 			Node: config.NodeConfig{
@@ -1443,7 +1456,7 @@ func TestNetworkMessenger_DoubleCloseShouldWork(t *testing.T) {
 func TestNetworkMessenger_PreventReprocessingShouldWork(t *testing.T) {
 	args := libp2p.ArgsNetworkMessenger{
 		ListenAddress: libp2p.TestListenAddrWithIp4AndTcp,
-		Marshalizer:   &mock.ProtoMarshallerMock{},
+		Marshaller:    &mock.ProtoMarshallerMock{},
 		P2pConfig: config.P2PConfig{
 			Node: config.NodeConfig{
 				Port: "0",
@@ -1486,7 +1499,7 @@ func TestNetworkMessenger_PreventReprocessingShouldWork(t *testing.T) {
 		Payload:   []byte("data"),
 		Timestamp: timeStamp,
 	}
-	buff, _ := args.Marshalizer.Marshal(innerMessage)
+	buff, _ := args.Marshaller.Marshal(innerMessage)
 	msg := &pubsub.Message{
 		Message: &pb.Message{
 			From:                 []byte(pid),
@@ -1510,7 +1523,7 @@ func TestNetworkMessenger_PreventReprocessingShouldWork(t *testing.T) {
 
 func TestNetworkMessenger_PubsubCallbackNotMessageNotValidShouldNotCallHandler(t *testing.T) {
 	args := libp2p.ArgsNetworkMessenger{
-		Marshalizer:   &mock.ProtoMarshallerMock{},
+		Marshaller:    &mock.ProtoMarshallerMock{},
 		ListenAddress: libp2p.TestListenAddrWithIp4AndTcp,
 		P2pConfig: config.P2PConfig{
 			Node: config.NodeConfig{
@@ -1562,7 +1575,7 @@ func TestNetworkMessenger_PubsubCallbackNotMessageNotValidShouldNotCallHandler(t
 		Payload:   []byte("data"),
 		Timestamp: time.Now().Unix(),
 	}
-	buff, _ := args.Marshalizer.Marshal(innerMessage)
+	buff, _ := args.Marshaller.Marshal(innerMessage)
 	msg := &pubsub.Message{
 		Message: &pb.Message{
 			From:                 []byte("not a valid pid"),
@@ -1586,7 +1599,7 @@ func TestNetworkMessenger_PubsubCallbackNotMessageNotValidShouldNotCallHandler(t
 
 func TestNetworkMessenger_PubsubCallbackReturnsFalseIfHandlerErrors(t *testing.T) {
 	args := libp2p.ArgsNetworkMessenger{
-		Marshalizer:   &mock.ProtoMarshallerMock{},
+		Marshaller:    &mock.ProtoMarshallerMock{},
 		ListenAddress: libp2p.TestListenAddrWithIp4AndTcp,
 		P2pConfig: config.P2PConfig{
 			Node: config.NodeConfig{
@@ -1612,7 +1625,6 @@ func TestNetworkMessenger_PubsubCallbackReturnsFalseIfHandlerErrors(t *testing.T
 	defer closeMessengers(messenger)
 
 	numCalled := uint32(0)
-	expectedErr := errors.New("expected error")
 	handler := &mock.MessageProcessorStub{
 		ProcessMessageCalled: func(message p2p.MessageP2P, fromConnectedPeer core.PeerID) error {
 			atomic.AddUint32(&numCalled, 1)
@@ -1628,7 +1640,7 @@ func TestNetworkMessenger_PubsubCallbackReturnsFalseIfHandlerErrors(t *testing.T
 		Timestamp: time.Now().Unix(),
 		Version:   libp2p.CurrentTopicMessageVersion,
 	}
-	buff, _ := args.Marshalizer.Marshal(innerMessage)
+	buff, _ := args.Marshaller.Marshal(innerMessage)
 	topic := "topic"
 	msg := &pubsub.Message{
 		Message: &pb.Message{
@@ -1650,9 +1662,9 @@ func TestNetworkMessenger_PubsubCallbackReturnsFalseIfHandlerErrors(t *testing.T
 	assert.Equal(t, uint32(1), atomic.LoadUint32(&numCalled))
 }
 
-func TestNetworkMessenger_UnjoinAllTopicsShouldWork(t *testing.T) {
+func TestNetworkMessenger_UnJoinAllTopicsShouldWork(t *testing.T) {
 	args := libp2p.ArgsNetworkMessenger{
-		Marshalizer:   &mock.ProtoMarshallerMock{},
+		Marshaller:    &mock.ProtoMarshallerMock{},
 		ListenAddress: libp2p.TestListenAddrWithIp4AndTcp,
 		P2pConfig: config.P2PConfig{
 			Node: config.NodeConfig{
@@ -1681,7 +1693,7 @@ func TestNetworkMessenger_UnjoinAllTopicsShouldWork(t *testing.T) {
 	_ = messenger.CreateTopic(topic, true)
 	assert.True(t, messenger.HasTopic(topic))
 
-	err := messenger.UnjoinAllTopics()
+	err := messenger.UnJoinAllTopics()
 	assert.Nil(t, err)
 
 	assert.False(t, messenger.HasTopic(topic))
@@ -1775,6 +1787,7 @@ func TestNetworkMessenger_GetConnectedPeersInfo(t *testing.T) {
 	}
 	messenger, _ := libp2p.NewMockMessenger(createMockNetworkArgs(), netw)
 	closeMessengers(messenger)
+	selfID := messenger.ID()
 
 	messenger.SetHost(&mock.ConnectableHostStub{
 		NetworkCalled: func() network.Network {
@@ -1786,6 +1799,9 @@ func TestNetworkMessenger_GetConnectedPeersInfo(t *testing.T) {
 					return make([]network.Conn, 0)
 				},
 			}
+		},
+		IDCalled: func() peer.ID {
+			return peer.ID(selfID)
 		},
 	})
 	selfShardID := uint32(0)
@@ -1858,7 +1874,7 @@ func TestNetworkMessenger_Bootstrap(t *testing.T) {
 
 	args := libp2p.ArgsNetworkMessenger{
 		ListenAddress: libp2p.TestListenAddrWithIp4AndTcp,
-		Marshalizer:   &marshal.GogoProtoMarshalizer{},
+		Marshaller:    &marshal.GogoProtoMarshalizer{},
 		P2pConfig: config.P2PConfig{
 			Node: config.NodeConfig{
 				Port:                       "0",

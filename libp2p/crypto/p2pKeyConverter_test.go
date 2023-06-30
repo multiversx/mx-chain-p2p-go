@@ -17,7 +17,8 @@ func TestConvertPublicKeyToPeerID(t *testing.T) {
 	t.Run("from a nil public key should error", func(t *testing.T) {
 		t.Parallel()
 
-		pid, err := p2pCrypto.ConvertPublicKeyToPeerID(nil)
+		conv := p2pCrypto.NewP2PKeyConverter()
+		pid, err := conv.ConvertPublicKeyToPeerID(nil)
 		assert.Empty(t, pid)
 		assert.Equal(t, p2pCrypto.ErrNilPublicKey, err)
 	})
@@ -31,7 +32,8 @@ func TestConvertPublicKeyToPeerID(t *testing.T) {
 			},
 		}
 
-		pid, err := p2pCrypto.ConvertPublicKeyToPeerID(mockPk)
+		conv := p2pCrypto.NewP2PKeyConverter()
+		pid, err := conv.ConvertPublicKeyToPeerID(mockPk)
 		assert.Empty(t, pid)
 		assert.Equal(t, expectedErr, err)
 	})
@@ -44,7 +46,8 @@ func TestConvertPublicKeyToPeerID(t *testing.T) {
 			},
 		}
 
-		pid, err := p2pCrypto.ConvertPublicKeyToPeerID(mockPk)
+		conv := p2pCrypto.NewP2PKeyConverter()
+		pid, err := conv.ConvertPublicKeyToPeerID(mockPk)
 		assert.Empty(t, pid)
 		assert.NotNil(t, err)
 		assert.Equal(t, "malformed public key: invalid length: 20", err.Error())
@@ -55,7 +58,8 @@ func TestConvertPublicKeyToPeerID(t *testing.T) {
 		keyGen := signing.NewKeyGenerator(secp256k1.NewSecp256k1())
 		_, pk := keyGen.GeneratePair()
 
-		pid, err := p2pCrypto.ConvertPublicKeyToPeerID(pk)
+		conv := p2pCrypto.NewP2PKeyConverter()
+		pid, err := conv.ConvertPublicKeyToPeerID(pk)
 		assert.NotEmpty(t, pid)
 		assert.Nil(t, err)
 	})
@@ -71,7 +75,8 @@ func TestConvertPublicKeyToPeerID(t *testing.T) {
 		assert.Nil(t, err)
 
 		pk := sk.GeneratePublic()
-		recoveredPid, err := p2pCrypto.ConvertPublicKeyToPeerID(pk)
+		conv := p2pCrypto.NewP2PKeyConverter()
+		recoveredPid, err := conv.ConvertPublicKeyToPeerID(pk)
 		assert.Nil(t, err)
 
 		assert.Equal(t, pid, recoveredPid)

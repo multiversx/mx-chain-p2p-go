@@ -39,7 +39,7 @@ func NewMessageVerifier(args ArgsMessageVerifier) (*messageVerifier, error) {
 
 func checkArgs(args ArgsMessageVerifier) error {
 	if check.IfNil(args.Marshaller) {
-		return p2p.ErrNilMarshalizer
+		return p2p.ErrNilMarshaller
 	}
 	if args.P2PSigner == nil {
 		return p2p.ErrNilP2PSigner
@@ -128,7 +128,7 @@ func convertPubSubMessagestoP2PMessage(msg *pubsubPb.Message, marshaller marshal
 		ValidatorData: nil,
 	}
 
-	return libp2p.NewMessage(pubsubMsg, marshaller)
+	return libp2p.NewMessage(pubsubMsg, marshaller, p2p.Broadcast)
 }
 
 // Serialize will serialize a list of p2p messages

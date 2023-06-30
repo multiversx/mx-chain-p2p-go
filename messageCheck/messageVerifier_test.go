@@ -35,7 +35,7 @@ func TestNewMessageVerifier(t *testing.T) {
 
 		mv, err := messagecheck.NewMessageVerifier(args)
 		require.Nil(t, mv)
-		require.Equal(t, p2p.ErrNilMarshalizer, err)
+		require.Equal(t, p2p.ErrNilMarshaller, err)
 	})
 
 	t.Run("nil p2p signer", func(t *testing.T) {
@@ -99,26 +99,28 @@ func TestSerializeDeserialize(t *testing.T) {
 
 		expectedMessages := []p2p.MessageP2P{
 			&message.Message{
-				FromField:      peerID.Bytes(),
-				PayloadField:   msgDataBytes, // it is used as data field for pubsub
-				SeqNoField:     []byte("seq"),
-				TopicField:     "topic",
-				SignatureField: []byte("sig"),
-				KeyField:       []byte("key"),
-				DataField:      []byte("payload1"),
-				TimestampField: 1,
-				PeerField:      peerID,
+				FromField:            peerID.Bytes(),
+				PayloadField:         msgDataBytes, // it is used as data field for pubsub
+				SeqNoField:           []byte("seq"),
+				TopicField:           "topic",
+				SignatureField:       []byte("sig"),
+				KeyField:             []byte("key"),
+				DataField:            []byte("payload1"),
+				TimestampField:       1,
+				PeerField:            peerID,
+				BroadcastMethodField: p2p.Broadcast,
 			},
 			&message.Message{
-				FromField:      peerID.Bytes(),
-				PayloadField:   msgDataBytes,
-				SeqNoField:     []byte("seq"),
-				TopicField:     "topic",
-				SignatureField: []byte("sig"),
-				KeyField:       []byte("key"),
-				DataField:      []byte("payload1"),
-				TimestampField: 1,
-				PeerField:      peerID,
+				FromField:            peerID.Bytes(),
+				PayloadField:         msgDataBytes,
+				SeqNoField:           []byte("seq"),
+				TopicField:           "topic",
+				SignatureField:       []byte("sig"),
+				KeyField:             []byte("key"),
+				DataField:            []byte("payload1"),
+				TimestampField:       1,
+				PeerField:            peerID,
+				BroadcastMethodField: p2p.Broadcast,
 			},
 		}
 
