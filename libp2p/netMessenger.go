@@ -333,8 +333,6 @@ func constructNodeWithPortRetry(
 }
 
 func setupExternalP2PLoggers() {
-	// TODO refactor the external logging by using an environment variable
-	//  for now, we will leave the logs to PANIC as to not record possible ERROR messages during the closing of the host
 	_ = logging.SetLogLevel("*", "PANIC")
 
 	for _, external := range externalPackages {

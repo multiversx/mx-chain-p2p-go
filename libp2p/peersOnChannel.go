@@ -103,8 +103,7 @@ func (poc *peersOnChannel) refreshPeersOnAllKnownTopics(ctx context.Context) {
 		case <-time.After(poc.refreshInterval):
 		}
 
-		//TODO remove this
-		log.Debug("peersOnChannel.refreshPeersOnAllKnownTopics - check")
+		log.Trace("peersOnChannel.refreshPeersOnAllKnownTopics - check")
 
 		listTopicsToBeRefreshed := make([]string, 0)
 
@@ -118,8 +117,7 @@ func (poc *peersOnChannel) refreshPeersOnAllKnownTopics(ctx context.Context) {
 		}
 		poc.mutPeers.RUnlock()
 
-		//TODO remove this
-		log.Debug("peersOnChannel.refreshPeersOnAllKnownTopics", "listTopicsToBeRefreshed", strings.Join(listTopicsToBeRefreshed, ", "))
+		log.Trace("peersOnChannel.refreshPeersOnAllKnownTopics", "listTopicsToBeRefreshed", strings.Join(listTopicsToBeRefreshed, ", "))
 
 		for _, topic := range listTopicsToBeRefreshed {
 			_ = poc.refreshPeersOnTopic(topic)
@@ -131,7 +129,6 @@ func (poc *peersOnChannel) refreshPeersOnAllKnownTopics(ctx context.Context) {
 func (poc *peersOnChannel) refreshPeersOnTopic(topic string) []core.PeerID {
 	list := poc.fetchPeersHandler(topic)
 	connectedPeers := make([]core.PeerID, len(list))
-	// TODO remove peers
 	peers := make([]string, 0, len(list))
 	for i, pid := range list {
 		peerID := core.PeerID(pid)
@@ -142,8 +139,7 @@ func (poc *peersOnChannel) refreshPeersOnTopic(topic string) []core.PeerID {
 
 	poc.updateConnectedPeersOnTopic(topic, connectedPeers)
 
-	// TODO remove this
-	log.Debug("refreshed peers on topic", "topic", topic, "connected peers", strings.Join(peers, ", "))
+	log.Trace("refreshed peers on topic", "topic", topic, "connected peers", strings.Join(peers, ", "))
 
 	return connectedPeers
 }
