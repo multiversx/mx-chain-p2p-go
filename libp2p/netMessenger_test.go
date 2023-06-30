@@ -2262,11 +2262,11 @@ func TestParseTransportOptions(t *testing.T) {
 		t.Run("should work", func(t *testing.T) {
 			options, addresses, err := libp2p.ParseTransportOptions(
 				config.TransportConfig{
-					QUICAddress: "/ip4/127.0.0.1/udp/%d/quic",
+					QUICAddress: "/ip4/127.0.0.1/udp/%d/quic-v1",
 				}, 100)
 			assert.Equal(t, 1, len(options))
 			assert.Equal(t, 1, len(addresses))
-			assert.Equal(t, "/ip4/127.0.0.1/udp/100/quic", addresses[0])
+			assert.Equal(t, "/ip4/127.0.0.1/udp/100/quic-v1", addresses[0])
 			assert.Nil(t, err)
 		})
 	})

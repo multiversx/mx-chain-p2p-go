@@ -60,7 +60,7 @@ func TestPeerConnectionsOnAllSupportedProtocolsShouldExchangeData(t *testing.T) 
 		TCP: config.TCPProtocolConfig{
 			ListenAddress: libp2p.TestListenAddrWithIp4AndTcp,
 		},
-		QUICAddress:         "/ip4/127.0.0.1/udp/%d/quic",
+		QUICAddress:         "/ip4/127.0.0.1/udp/%d/quic-v1",
 		WebSocketAddress:    "/ip4/127.0.0.1/tcp/%d/ws",
 		WebTransportAddress: "/ip4/127.0.0.1/udp/%d/quic-v1/webtransport",
 	}
@@ -83,11 +83,11 @@ func TestPeerConnectionsOnAllSupportedProtocolsShouldExchangeData(t *testing.T) 
 
 	quicPeerArgs := createBaseArgs()
 	quicPeerArgs.P2pConfig.Node.Transports = config.TransportConfig{
-		QUICAddress: "/ip4/127.0.0.1/udp/%d/quic",
+		QUICAddress: "/ip4/127.0.0.1/udp/%d/quic-v1",
 	}
 	quicPeer, err := libp2p.NewNetworkMessenger(quicPeerArgs)
 	require.Nil(t, err)
-	addressToConnect = getAddressMatching(seeder.Addresses(), "/quic/", "/quic-v1/")
+	addressToConnect = getAddressMatching(seeder.Addresses(), "/quic-v1/", "webtransport")
 	err = quicPeer.ConnectToPeer(addressToConnect)
 	require.Nil(t, err)
 	messengers = append(messengers, quicPeer)
@@ -109,7 +109,7 @@ func TestPeerConnectionsOnAllSupportedProtocolsShouldExchangeData(t *testing.T) 
 	}
 	webTransportPeer, err := libp2p.NewNetworkMessenger(webTransportPeerArgs)
 	require.Nil(t, err)
-	addressToConnect = getAddressMatching(seeder.Addresses(), "/quic-v1/", "")
+	addressToConnect = getAddressMatching(seeder.Addresses(), "webtransport", "")
 	err = webTransportPeer.ConnectToPeer(addressToConnect)
 	require.Nil(t, err)
 
