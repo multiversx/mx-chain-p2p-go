@@ -81,7 +81,7 @@ func prepareMessengerForMatchDataReceive(messenger p2p.Messenger, matchData []by
 				}
 
 				// do not print the message.Data() or matchData as the test TestLibp2pMessenger_BroadcastDataBetween2PeersWithLargeMsgShouldWork
-				// will cause disruption on the github action page
+				// will cause disruption on the GitHub action page
 
 				wg.Done()
 
@@ -106,7 +106,7 @@ func getConnectableAddress(messenger p2p.Messenger) string {
 func createTestTCPTransportConfig() config.TransportConfig {
 	return config.TransportConfig{
 		TCP: config.TCPProtocolConfig{
-			ListenAddress: libp2p.TestListenAddrWithIp4AndTcp,
+			ListenAddress: p2p.LocalHostListenAddrWithIp4AndTcp,
 		},
 	}
 }
@@ -2215,7 +2215,7 @@ func TestParseTransportOptions(t *testing.T) {
 			options, addresses, err := libp2p.ParseTransportOptions(
 				config.TransportConfig{
 					TCP: config.TCPProtocolConfig{
-						ListenAddress:    libp2p.TestListenAddrWithIp4AndTcp,
+						ListenAddress:    p2p.LocalHostListenAddrWithIp4AndTcp,
 						PreventPortReuse: true,
 					},
 				}, 100)
@@ -2228,7 +2228,7 @@ func TestParseTransportOptions(t *testing.T) {
 			options, addresses, err := libp2p.ParseTransportOptions(
 				config.TransportConfig{
 					TCP: config.TCPProtocolConfig{
-						ListenAddress:    libp2p.TestListenAddrWithIp4AndTcp,
+						ListenAddress:    p2p.LocalHostListenAddrWithIp4AndTcp,
 						PreventPortReuse: false,
 					},
 				}, 100)

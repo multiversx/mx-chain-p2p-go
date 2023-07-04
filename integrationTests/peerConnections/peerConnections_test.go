@@ -58,7 +58,7 @@ func TestPeerConnectionsOnAllSupportedProtocolsShouldExchangeData(t *testing.T) 
 	seederArgs := createBaseArgs()
 	seederArgs.P2pConfig.Node.Transports = config.TransportConfig{
 		TCP: config.TCPProtocolConfig{
-			ListenAddress: libp2p.TestListenAddrWithIp4AndTcp,
+			ListenAddress: p2p.LocalHostListenAddrWithIp4AndTcp,
 		},
 		QUICAddress:         "/ip4/127.0.0.1/udp/%d/quic-v1",
 		WebSocketAddress:    "/ip4/127.0.0.1/tcp/%d/ws",
@@ -71,7 +71,7 @@ func TestPeerConnectionsOnAllSupportedProtocolsShouldExchangeData(t *testing.T) 
 	tcpPeerArgs := createBaseArgs()
 	tcpPeerArgs.P2pConfig.Node.Transports = config.TransportConfig{
 		TCP: config.TCPProtocolConfig{
-			ListenAddress: libp2p.TestListenAddrWithIp4AndTcp,
+			ListenAddress: p2p.LocalHostListenAddrWithIp4AndTcp,
 		},
 	}
 	tcpPeer, err := libp2p.NewNetworkMessenger(tcpPeerArgs)

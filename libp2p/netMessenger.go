@@ -40,9 +40,6 @@ import (
 )
 
 const (
-	// TestListenAddrWithIp4AndTcp defines the local host listening ip v.4 address and TCP used in testing
-	TestListenAddrWithIp4AndTcp = "/ip4/127.0.0.1/tcp/%d"
-
 	// DirectSendID represents the protocol ID for sending and receiving direct P2P messages
 	DirectSendID = protocol.ID("/erd/directsend/1.0.0")
 

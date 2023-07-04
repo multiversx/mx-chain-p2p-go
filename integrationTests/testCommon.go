@@ -27,7 +27,7 @@ func createP2PConfig(initialPeerList []string) config.P2PConfig {
 			Port: "0",
 			Transports: config.TransportConfig{
 				TCP: config.TCPProtocolConfig{
-					ListenAddress: libp2p.TestListenAddrWithIp4AndTcp,
+					ListenAddress: p2p.LocalHostListenAddrWithIp4AndTcp,
 				},
 			},
 		},
@@ -169,7 +169,7 @@ func createP2PConfigWithNoDiscovery() config.P2PConfig {
 			Port: "0",
 			Transports: config.TransportConfig{
 				TCP: config.TCPProtocolConfig{
-					ListenAddress: libp2p.TestListenAddrWithIp4AndTcp,
+					ListenAddress: p2p.LocalHostListenAddrWithIp4AndTcp,
 				},
 			},
 		},

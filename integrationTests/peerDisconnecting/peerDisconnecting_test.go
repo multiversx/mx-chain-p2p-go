@@ -20,7 +20,7 @@ func createDefaultConfig() config.P2PConfig {
 		Node: config.NodeConfig{
 			Transports: config.TransportConfig{
 				TCP: config.TCPProtocolConfig{
-					ListenAddress: libp2p.TestListenAddrWithIp4AndTcp,
+					ListenAddress: p2p.LocalHostListenAddrWithIp4AndTcp,
 				},
 			},
 		},
