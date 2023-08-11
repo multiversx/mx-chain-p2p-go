@@ -182,9 +182,9 @@ func (m *messageVerifier) Deserialize(messagesBytes []byte) ([]p2p.MessageP2P, e
 			return nil, err
 		}
 
-		p2pMsg, err := convertPubSubMessagestoP2PMessage(&pubsubMsg, m.marshaller)
-		if err != nil {
-			log.Trace("convertPubSubMessagestoP2PMessage", "error", err.Error())
+		p2pMsg, errConvert := convertPubSubMessagestoP2PMessage(&pubsubMsg, m.marshaller)
+		if errConvert != nil {
+			log.Trace("convertPubSubMessagestoP2PMessage", "error", errConvert.Error())
 			continue
 		}
 

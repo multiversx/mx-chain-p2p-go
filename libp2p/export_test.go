@@ -4,12 +4,14 @@ import (
 	"context"
 	"time"
 
-	"github.com/libp2p/go-libp2p-pubsub"
+	"github.com/libp2p/go-libp2p"
+	pubsub "github.com/libp2p/go-libp2p-pubsub"
 	pb "github.com/libp2p/go-libp2p-pubsub/pb"
 	"github.com/libp2p/go-libp2p/core/network"
 	"github.com/libp2p/go-libp2p/core/peer"
 	"github.com/multiversx/mx-chain-core-go/core"
 	p2p "github.com/multiversx/mx-chain-p2p-go"
+	"github.com/multiversx/mx-chain-p2p-go/config"
 	"github.com/multiversx/mx-chain-storage-go/types"
 	"github.com/whyrusleeping/timecache"
 )
@@ -184,4 +186,9 @@ func (tp *topicProcessors) GetList() ([]string, []p2p.MessageProcessor) {
 
 func NewUnknownPeerShardResolver() *unknownPeerShardResolver {
 	return &unknownPeerShardResolver{}
+}
+
+// ParseTransportOptions -
+func ParseTransportOptions(configs config.TransportConfig, port int) ([]libp2p.Option, []string, error) {
+	return parseTransportOptions(configs, port)
 }

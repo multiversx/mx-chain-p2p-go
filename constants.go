@@ -12,6 +12,9 @@ const NormalOperation NodeOperation = "normal operation"
 const FullArchiveMode NodeOperation = "full archive mode"
 
 const (
+	// LocalHostListenAddrWithIp4AndTcp defines the local host listening ip v.4 address and TCP
+	LocalHostListenAddrWithIp4AndTcp = "/ip4/127.0.0.1/tcp/%d"
+
 	displayLastPidChars = 12
 
 	// ListsSharder is the variant that uses lists

@@ -17,11 +17,11 @@ import (
 
 func createMessenger() p2p.Messenger {
 	args := libp2p.ArgsNetworkMessenger{
-		Marshalizer:   &mock.ProtoMarshallerMock{},
-		ListenAddress: libp2p.TestListenAddrWithIp4AndTcp,
+		Marshalizer: &mock.ProtoMarshallerMock{},
 		P2pConfig: config.P2PConfig{
 			Node: config.NodeConfig{
-				Port: "0",
+				Port:       "0",
+				Transports: createTestTCPTransportConfig(),
 			},
 			KadDhtPeerDiscovery: config.KadDhtPeerDiscoveryConfig{
 				Enabled: false,

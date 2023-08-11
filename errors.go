@@ -158,3 +158,18 @@ var ErrNilP2PSigner = errors.New("nil p2p signer")
 
 // ErrNilPeerTopicNotifier signals that a nil peer topic notifier have been provided
 var ErrNilPeerTopicNotifier = errors.New("nil peer topic notifier")
+
+// ErrInvalidTCPAddress signals that an invalid TCP address was used
+var ErrInvalidTCPAddress = errors.New("invalid TCP address")
+
+// ErrInvalidQUICAddress signals that an invalid QUIC address was used
+var ErrInvalidQUICAddress = errors.New("invalid QUIC address")
+
+// ErrInvalidWSAddress signals that an invalid WebSocket address was used
+var ErrInvalidWSAddress = errors.New("invalid WebSocket address")
+
+// ErrInvalidWebTransportAddress signals that an invalid WebTransport address was used
+var ErrInvalidWebTransportAddress = errors.New("invalid WebTransport address")
+
+// ErrNoTransportsDefined signals that no transports were defined
+var ErrNoTransportsDefined = errors.New("no transports defined")
